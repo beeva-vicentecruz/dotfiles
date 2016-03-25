@@ -1,0 +1,76 @@
+[user]
+	name = David Dominguez
+	email = david.dominguez.martinez@gmail.com
+
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.gitignore
+	fileMode = false
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[commit]
+	template = ~/.gitmessage
+
+[alias]
+	# Typical shortcuts
+	cp = cherry pick
+	cl = clone
+	co = checkout
+	ci = commit
+	st = status -sb
+	br = branch
+	
+	# Prints the type of a given object (commit, tag, etc.)
+	type = cat-file -t
+
+	# Gives a summary of any object (try e.g. HEAD)
+	dump = cat-file -p
+
+	# List current branch commits in the more concise way I can think of (just short SHA and message)
+	slog = log --pretty=oneline --abbrev-commit
+
+	# List commits in current branch in a very concise and compact way (graph format)
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+	# List commits in current branch in a very concise and compact way (list format)
+	lglist = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	
+	# Leaves your working copy in the very same state of your HEAD. Removes all staged, unstaged and untracked changes. WARNING: this is a highly destructive operation, use it with extreme caution
+	wipe = !git reset --hard && git clean -fd
+
+	# Unstage current working copy changes
+	unstage = reset HEAD --
+
+	# Pulls changes rebasing local commits to come after the pulled changes and remove deleted remote-tracking branches
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+
+	# Deletes every branch that's been merged into master (or the specified branch)
+	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+
+	# Pulls changes rebasing local commits into master (or the specified branch) and deletes every branch that's been merged into this branch
+	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+
+	# Resets the previous commit, but keeps all the changes from that commit in the working directory
+	undo = reset HEAD~1 --mixed
+
+	# Adds all local changes including untracked files and creates a commit.
+	save = !git add -A && git commit -m 'save wip'
