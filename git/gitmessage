@@ -4,5 +4,6 @@ Description
 
 issue #ticket
 
-# type: feat|fix|doc|refactor|test
+# type: feat|fix|doc|style|refactor|test|chore
+# title: no more than 70 chars using imperative, present tense
 # module: application or module
